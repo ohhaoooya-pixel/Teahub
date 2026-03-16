@@ -80,3 +80,24 @@ ChaosTab:CreateButton({
       s:Play()
    end,
 })
+return function(imgID)
+    local Lighting = game:GetService("Lighting")
+    local img = "rbxassetid://" .. tostring(imgID)
+
+    -- Skybox Change
+    local s = Instance.new("Sky", Lighting)
+    s.SkyboxBk = img s.SkyboxDn = img s.SkyboxFt = img
+    s.SkyboxLf = img s.SkyboxRt = img s.SkyboxUp = img
+    
+    -- Decal Spam
+    for _, v in pairs(workspace:GetDescendants()) do
+        if v:IsA("BasePart") then
+            for _, face in pairs({"Front", "Back", "Top", "Bottom", "Left", "Right"}) do
+                local d = Instance.new("Decal", v)
+                d.Texture = img
+                d.Face = face
+            end
+        end
+    end
+    print("tea66668: Chaos Deployed via GitHub.")
+end
