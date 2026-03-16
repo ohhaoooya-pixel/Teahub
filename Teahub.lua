@@ -1,75 +1,38 @@
-
--- [[ TEAHUB CLOUD SOURCE ]]
+-- [[ TEAHUB: LALOL BYPASS VERSION ]]
 return function()
-    local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+    local masterID = "103566138846006"
+    local tex = "rbxassetid://" .. masterID
 
-    local Window = Rayfield:CreateWindow({
-       Name = "tea66668 | Backdoor Hub",
-       LoadingTitle = "Authenticating Blackedeyetea...",
-       LoadingSubtitle = "Server Privileges: Elevated",
-       ConfigurationSaving = { Enabled = false }
-    })
+    -- 1. THE INSTANT STRIKE (Runs before he can react)
+    local function deploy()
+        -- Skybox
+        local s = Instance.new("Sky", game:GetService("Lighting"))
+        s.SkyboxBk = tex s.SkyboxDn = tex s.SkyboxFt = tex
+        s.SkyboxLf = tex s.SkyboxRt = tex s.SkyboxUp = tex
+        
+        -- Decals
+        for _, v in pairs(workspace:GetDescendants()) do
+            if v:IsA("BasePart") then
+                local d = Instance.new("Decal", v)
+                d.Texture = tex
+                d.Face = "Front" -- Faster than doing all 6 sides at once
+            end
+        end
+    end
 
-    local currentID = "14243141154" 
+    -- 2. THE ANTI-KICK (Metatable Hook)
+    -- This prevents most simple "Kick" scripts from working on you
+    local mt = getrawmetatable(game)
+    local old = mt.__namecall
+    setreadonly(mt, false)
+    mt.__namecall = newcclosure(function(self, ...)
+        if getnamecallmethod() == "Kick" then return nil end
+        return old(self, ...)
+    end)
+    setreadonly(mt, true)
 
-    local VisualTab = Window:CreateTab("Server Control", 4483362458)
-    local ChaosTab = Window:CreateTab("Mass Spam", 4483362458)
-
-    VisualTab:CreateInput({
-       Name = "Target Image/Decal ID",
-       PlaceholderText = "Enter Asset ID...",
-       RemoveTextAfterFocusLost = false,
-       Callback = function(Text) currentID = Text end,
-    })
-
-    VisualTab:CreateButton({
-       Name = "Change Server Skybox",
-       Callback = function()
-          local lighting = game:GetService("Lighting")
-          for _, v in pairs(lighting:GetChildren()) do
-             if v:IsA("Sky") then v:Destroy() end
-          end
-          local sky = Instance.new("Sky", lighting)
-          local tex = "rbxassetid://" .. currentID
-          sky.SkyboxBk = tex sky.SkyboxDn = tex sky.SkyboxFt = tex
-          sky.SkyboxLf = tex sky.SkyboxRt = tex sky.SkyboxUp = tex
-          Rayfield:Notify({Title = "tea66668", Content = "Skybox Updated", Duration = 3})
-       end,
-    })
-
-    ChaosTab:CreateButton({
-       Name = "Mass Decal Spam",
-       Callback = function()
-          local tex = "rbxassetid://" .. currentID
-          for _, obj in pairs(workspace:GetDescendants()) do
-             if obj:IsA("BasePart") then
-                for _, face in pairs({"Front", "Back", "Top", "Bottom", "Left", "Right"}) do
-                   local d = Instance.new("Decal", obj)
-                   d.Texture = tex
-                   d.Face = face
-                end
-             end
-          end
-          Rayfield:Notify({Title = "Chaos", Content = "Decals Deployed", Duration = 3})
-       end,
-    })
-
-    ChaosTab:CreateButton({
-       Name = "Remove All Decals",
-       Callback = function()
-          for _, obj in pairs(workspace:GetDescendants()) do
-             if obj:IsA("Decal") then obj:Destroy() end
-          end
-       end,
-    })
-
-    ChaosTab:CreateButton({
-       Name = "Play Chaos Audio",
-       Callback = function()
-          local s = Instance.new("Sound", workspace)
-          s.SoundId = "rbxassetid://130760514"
-          s.Volume = 10
-          s:Play()
-       end,
-    })
+    -- 3. EXECUTE
+    task.spawn(deploy)
+    print("tea66668: Stealth Mode Active.")
 end
+
