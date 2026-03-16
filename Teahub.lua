@@ -1,103 +1,75 @@
--- TEA TEAM BACKDOOR GUI (Arceus/Codex/Vega X Compatible)
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
-local Window = Rayfield:CreateWindow({
-   Name = "tea66668 | Backdoor Hub",
-   LoadingTitle = "Authenticating Blackedeyetea...",
-   LoadingSubtitle = "Server Privileges: Elevated",
-   ConfigurationSaving = { Enabled = false }
-})
+-- [[ TEAHUB CLOUD SOURCE ]]
+return function()
+    local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
--- VARIABLES
-local currentID = "14243141154" -- Default image (you can change this)
+    local Window = Rayfield:CreateWindow({
+       Name = "tea66668 | Backdoor Hub",
+       LoadingTitle = "Authenticating Blackedeyetea...",
+       LoadingSubtitle = "Server Privileges: Elevated",
+       ConfigurationSaving = { Enabled = false }
+    })
 
--- TABS
-local VisualTab = Window:CreateTab("Server Control", 4483362458)
-local ChaosTab = Window:CreateTab("Mass Spam", 4483362458)
+    local currentID = "14243141154" 
 
--- 1. SERVER CONTROL
-VisualTab:CreateInput({
-   Name = "Target Image/Decal ID",
-   PlaceholderText = "Enter Asset ID...",
-   RemoveTextAfterFocusLost = false,
-   Callback = function(Text)
-      currentID = Text
-   end,
-})
+    local VisualTab = Window:CreateTab("Server Control", 4483362458)
+    local ChaosTab = Window:CreateTab("Mass Spam", 4483362458)
 
-VisualTab:CreateButton({
-   Name = "Change Server Skybox",
-   Callback = function()
-      local lighting = game:GetService("Lighting")
-      -- Clear old skies
-      for _, v in pairs(lighting:GetChildren()) do
-         if v:IsA("Sky") then v:Destroy() end
-      end
-      
-      local sky = Instance.new("Sky", lighting)
-      local tex = "rbxassetid://" .. currentID
-      sky.SkyboxBk = tex sky.SkyboxDn = tex sky.SkyboxFt = tex
-      sky.SkyboxLf = tex sky.SkyboxRt = tex sky.SkyboxUp = tex
-      
-      Rayfield:Notify({Title = "tea66668", Content = "Skybox Updated For All", Duration = 3})
-   end,
-})
+    VisualTab:CreateInput({
+       Name = "Target Image/Decal ID",
+       PlaceholderText = "Enter Asset ID...",
+       RemoveTextAfterFocusLost = false,
+       Callback = function(Text) currentID = Text end,
+    })
 
--- 2. MASS SPAM
-ChaosTab:CreateButton({
-   Name = "Mass Decal Spam (ALL PARTS)",
-   Callback = function()
-      local tex = "rbxassetid://" .. currentID
-      for _, obj in pairs(workspace:GetDescendants()) do
-         if obj:IsA("BasePart") then
-            local f = {"Front", "Back", "Top", "Bottom", "Left", "Right"}
-            for _, face in pairs(f) do
-               local d = Instance.new("Decal", obj)
-               d.Texture = tex
-               d.Face = face
-            end
-         end
-      end
-      Rayfield:Notify({Title = "Chaos", Content = "Server Plastered with Decals", Duration = 3})
-   end,
-})
+    VisualTab:CreateButton({
+       Name = "Change Server Skybox",
+       Callback = function()
+          local lighting = game:GetService("Lighting")
+          for _, v in pairs(lighting:GetChildren()) do
+             if v:IsA("Sky") then v:Destroy() end
+          end
+          local sky = Instance.new("Sky", lighting)
+          local tex = "rbxassetid://" .. currentID
+          sky.SkyboxBk = tex sky.SkyboxDn = tex sky.SkyboxFt = tex
+          sky.SkyboxLf = tex sky.SkyboxRt = tex sky.SkyboxUp = tex
+          Rayfield:Notify({Title = "tea66668", Content = "Skybox Updated", Duration = 3})
+       end,
+    })
 
-ChaosTab:CreateButton({
-   Name = "Remove All Decals",
-   Callback = function()
-      for _, obj in pairs(workspace:GetDescendants()) do
-         if obj:IsA("Decal") then obj:Destroy() end
-      end
-   end,
-})
+    ChaosTab:CreateButton({
+       Name = "Mass Decal Spam",
+       Callback = function()
+          local tex = "rbxassetid://" .. currentID
+          for _, obj in pairs(workspace:GetDescendants()) do
+             if obj:IsA("BasePart") then
+                for _, face in pairs({"Front", "Back", "Top", "Bottom", "Left", "Right"}) do
+                   local d = Instance.new("Decal", obj)
+                   d.Texture = tex
+                   d.Face = face
+                end
+             end
+          end
+          Rayfield:Notify({Title = "Chaos", Content = "Decals Deployed", Duration = 3})
+       end,
+    })
 
-ChaosTab:CreateButton({
-   Name = "Play Chaos Audio",
-   Callback = function()
-      local s = Instance.new("Sound", workspace)
-      s.SoundId = "rbxassetid://130760514"
-      s.Volume = 10
-      s:Play()
-   end,
-})
-return function(imgID)
-    local Lighting = game:GetService("Lighting")
-    local img = "rbxassetid://" .. tostring(imgID)
+    ChaosTab:CreateButton({
+       Name = "Remove All Decals",
+       Callback = function()
+          for _, obj in pairs(workspace:GetDescendants()) do
+             if obj:IsA("Decal") then obj:Destroy() end
+          end
+       end,
+    })
 
-    -- Skybox Change
-    local s = Instance.new("Sky", Lighting)
-    s.SkyboxBk = img s.SkyboxDn = img s.SkyboxFt = img
-    s.SkyboxLf = img s.SkyboxRt = img s.SkyboxUp = img
-    
-    -- Decal Spam
-    for _, v in pairs(workspace:GetDescendants()) do
-        if v:IsA("BasePart") then
-            for _, face in pairs({"Front", "Back", "Top", "Bottom", "Left", "Right"}) do
-                local d = Instance.new("Decal", v)
-                d.Texture = img
-                d.Face = face
-            end
-        end
-    end
-    print("tea66668: Chaos Deployed via GitHub.")
+    ChaosTab:CreateButton({
+       Name = "Play Chaos Audio",
+       Callback = function()
+          local s = Instance.new("Sound", workspace)
+          s.SoundId = "rbxassetid://130760514"
+          s.Volume = 10
+          s:Play()
+       end,
+    })
 end
