@@ -1,38 +1,33 @@
--- [[ TEAHUB: LALOL BYPASS VERSION ]]
+--- [[ TEAHUB: CHAOS PARTY VERSION ]]
 return function()
     local masterID = "103566138846006"
     local tex = "rbxassetid://" .. masterID
 
-    -- 1. THE INSTANT STRIKE (Runs before he can react)
-    local function deploy()
-        -- Skybox
+    -- 1. THE INSTANT SETUP
+    local function setup()
         local s = Instance.new("Sky", game:GetService("Lighting"))
         s.SkyboxBk = tex s.SkyboxDn = tex s.SkyboxFt = tex
         s.SkyboxLf = tex s.SkyboxRt = tex s.SkyboxUp = tex
         
-        -- Decals
         for _, v in pairs(workspace:GetDescendants()) do
             if v:IsA("BasePart") then
                 local d = Instance.new("Decal", v)
                 d.Texture = tex
-                d.Face = "Front" -- Faster than doing all 6 sides at once
+                d.Face = "Front"
             end
         end
     end
+    task.spawn(setup)
 
-    -- 2. THE ANTI-KICK (Metatable Hook)
-    -- This prevents most simple "Kick" scripts from working on you
-    local mt = getrawmetatable(game)
-    local old = mt.__namecall
-    setreadonly(mt, false)
-    mt.__namecall = newcclosure(function(self, ...)
-        if getnamecallmethod() == "Kick" then return nil end
-        return old(self, ...)
+    -- 2. DISCO LIGHTING (For the vibe)
+    task.spawn(function()
+        while task.wait(0.5) do
+            game:GetService("Lighting").Ambient = Color3.new(math.random(), math.random(), math.random())
+            game:GetService("Lighting").OutdoorAmbient = Color3.new(math.random(), math.random(), math.random())
+        end
     end)
-    setreadonly(mt, true)
 
-    -- 3. EXECUTE
-    task.spawn(deploy)
-    print("tea66668: Stealth Mode Active.")
+    print("tea66668: Party Mode Loaded for BACON_PRO and the crew!")
 end
+
 
